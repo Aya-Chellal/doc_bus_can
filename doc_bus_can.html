@@ -283,7 +283,79 @@
                     </td>
                   </tr>
                 </table>
-
+                <h3>4.2.1 Analyse des trames CAN du TP</h3>
+                
+                <p>
+                  Les essais réalisés sur la maquette ont consisté à observer les trames CAN qui circulent sur le banc
+                  lors de l’activation de fonctions simples : veilleuses, feux de recul, feux de route, clignotants et essuie-glaces.
+                  L’interface PEAK avec le logiciel PCAN-View a été utilisée avec un débit de 100 kbit/s.
+                </p>
+                
+                <table width="100%" cellpadding="8" cellspacing="0" border="1">
+                  <tr bgcolor="#dbeafe">
+                    <th>Trame CAN</th>
+                    <th>Longueur</th>
+                    <th>États / données observées</th>
+                    <th>Interprétation</th>
+                  </tr>
+                
+                  <tr>
+                    <td><b>531h</b></td>
+                    <td>2 octets</td>
+                    <td>
+                      00 00 : repos<br>
+                      01 00 : veilleuses<br>
+                      03 00 : feux de croisement<br>
+                      04 00 : feux de route<br>
+                      00 01 / 00 11 : clignotant droit<br>
+                      00 02 / 00 12 : clignotant gauche<br>
+                      00 40 : feux de stop
+                    </td>
+                    <td>
+                      Cette trame permet d’observer des informations d’état liées à l’éclairage. L’émission d’une trame 531h
+                      peut modifier l’information vue par certains calculateurs, mais ne permet pas toujours de piloter directement
+                      les lampes, car certaines sorties sont commandées en filaire par J519.
+                    </td>
+                  </tr>
+                
+                  <tr>
+                    <td><b>591h</b></td>
+                    <td>4 octets</td>
+                    <td>
+                      03 00 0B 00 : repos<br>
+                      03 20 0B 00 : information boîte de vitesse en position recul
+                    </td>
+                    <td>
+                      Cette trame est liée à l’information de marche arrière. Dans le TP, l’émission de cette information permet
+                      d’activer les feux de recul, car l’information est transmise sur le réseau CAN puis exploitée par J519.
+                    </td>
+                  </tr>
+                
+                  <tr>
+                    <td><b>2C1h</b></td>
+                    <td>3 octets</td>
+                    <td>
+                      00 00 80 : repos<br>
+                      04 00 80 : appel de phares<br>
+                      08 00 80 : feux de route<br>
+                      01 00 80 : clignotant gauche<br>
+                      02 00 80 : clignotant droit<br>
+                      00 02 80 : essuie-glaces vitesse 1<br>
+                      00 05 80 : essuie-glaces vitesse 2<br>
+                      00 08 80 : essuie-glaces vitesse 3
+                    </td>
+                    <td>
+                      Cette trame correspond aux informations issues de la colonne de direction J527. Elle permet d’observer
+                      ou de reproduire certaines demandes conducteur comme les feux de route, les clignotants ou les essuie-glaces.
+                    </td>
+                  </tr>
+                </table>
+                
+                <p>
+                  Ces essais montrent que le réseau CAN transporte principalement des informations d’état ou de demande.
+                  Le pilotage physique des lampes reste assuré par le calculateur J519, qui commande les sorties électriques
+                  en filaire vers les actionneurs.
+                </p>
                 <h3>4.3 Procédure d’exploitation (résumé)</h3>
                 <ol>
                   <li>Mise sous tension du banc (12/14 V) et vérification du fonctionnement global.</li>
